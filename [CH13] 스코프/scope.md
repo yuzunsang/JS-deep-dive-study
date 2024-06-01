@@ -5,10 +5,10 @@
 모든 식별자(변수 이름, 함수 이름, 클래스 이름 등)는 자신이 선언된 위치에 의해 다른 코드가 식별자 자신을 참조할 수 있는 유효 범위가 결정되는 것을 스코프라고 한다.
 
 ```jsx
-var x='global';
-function foo(){
-	var x= 'local';
-	console.log(x); //?
+var x = "global";
+function foo() {
+  var x = "local";
+  console.log(x); //?
 }
 foo();
 console.log(x); //?
@@ -24,37 +24,36 @@ let const 키워드로 선언된 변수는 같은 스코프 내에서 중복 선
 
 ## 13.2 스코프의 종류
 
-| 구분 | 설명 | 스코프 | 변수 |
-| --- | --- | --- | --- |
+| 구분 | 설명                  | 스코프      | 변수      |
+| ---- | --------------------- | ----------- | --------- |
 | 전역 | 코드의 가장 바깥 영역 | 전역 스코프 | 전역 변수 |
-| 지역 | 함수 몸체 내부 | 지역 스코프 | 지역 변수 |
+| 지역 | 함수 몸체 내부        | 지역 스코프 | 지역 변수 |
 
 전역 변수는 어디서든지 참조할 수 있다.
 
-지역 변수는 자신의 지역 스코프와 하위 지역 스코프에서 유효하다. 
+지역 변수는 자신의 지역 스코프와 하위 지역 스코프에서 유효하다.
 
 →하위 지역 스코프란? 중첩된 {}을 생각하면 쉽다.
 
 ```jsx
-var x='global x';
-var y='global y';
+var x = "global x";
+var y = "global y";
 
 function outer() {
-    var z='outer z';
+  var z = "outer z";
 
-    console.log(x); //global x
+  console.log(x); //global x
+  console.log(y); //global y
+  console.log(z); //outer z
+
+  function inner() {
+    var x = "inner local x";
+
+    console.log(x); //inner local x
     console.log(y); //global y
     console.log(z); //outer z
-
-    function inner() {
-        var x ='inner local x';
-
-        console.log(x); //inner local x
-        console.log(y); //global y
-        console.log(z); //outer z
-    
-    }
-    inner();
+  }
+  inner();
 }
 outer();
 
@@ -81,57 +80,51 @@ console.log(z); //Uncaught ReferenceError: z is not defined
 var 키워드로 선언된 변수는 오로지 함수의 코드 블록(함수 몸체)만을 지역 스코프로 인정한다 이를 함수 레벨 스코프라고 한다.
 
 ```jsx
-var x=1;
+var x = 1;
 
-if(true){
-	var x=10;
+if (true) {
+  var x = 10;
 }
 
-console.log(x); 
+console.log(x);
 ```
 
 - 정답
-    
-    10!!!!!
-    var x=10;으로 재선언 됐다고 생각하면 됨
-    
+  10!!!!!
+  var x=10;으로 재선언 됐다고 생각하면 됨
 
 var 키워드로 선언된 변수는 함수 레벨 스코프를 가진다. 이는 변수가 선언된 함수 내에서만 유효하며, 함수가 아닌 블록 (if, for, while 등 {}로 감싸진 블록)에서는 별도의 스코프를 가지지 않는다. 따라서 블록 내에서 선억된 var는 블록 외부에서도 접근할 수 있고 해당 함수 내에서 전역적으로 유효하다.
 
 ```jsx
 let y = 1;
 if (true) {
-  let y = 10; 
+  let y = 10;
 }
-console.log(y); 
+console.log(y);
 ```
 
 - 정답
-    
-    1
-    let과 const는 블록 레벨 스코프를 가지므로 블록 내에서만 유효하고 블록 외부에는 영향을 미치지 않는다.
-    
+  1
+  let과 const는 블록 레벨 스코프를 가지므로 블록 내에서만 유효하고 블록 외부에는 영향을 미치지 않는다.
 
 ## 13.5 렉시컬 스코프
 
 ```jsx
-var x=1;
+var x = 1;
 function foo() {
-    var x=10;
-    bar();
+  var x = 10;
+  bar();
 }
 function bar() {
-    console.log(x);
+  console.log(x);
 }
 foo();
 bar();
 ```
 
 - 정답
-    
-    1
-    1
-    
+  1
+  1
 
 렉시컬 스코프란 함수를 어디서 정의 했는지에 따라 상위 스코프를 결정한다.
 
